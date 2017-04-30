@@ -62,9 +62,11 @@ createXHR = (options, done) ->
 
 processResponse = (response, type) ->
   if typeof response is 'string' and typeof type is 'string'
+    debugger
     if type.match(/\bjson\b/)
       try response = JSON.parse(response)
-    else if type.match(/\b(?:java|ecma)script\b/)
+      # else if type.match(/\b(?:java|ecma)script\b/)
+    else if type.match(/\bjavascript\b/)
       script = document.createElement('script')
       script.text = response
       document.head.appendChild(script).parentNode.removeChild(script)

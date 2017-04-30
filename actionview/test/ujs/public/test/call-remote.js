@@ -103,10 +103,13 @@ asyncTest('JS code should be executed', 1, function() {
 asyncTest('ecmascript code should be executed', 1, function() {
   buildForm({ method: 'post', 'data-type': 'script' })
 
+  // $('form').append('<input type="text" name="content_type" value="text/javascript">')
   $('form').append('<input type="text" name="content_type" value="application/ecmascript">')
   $('form').append('<input type="text" name="content" value="ok(true, \'remote code should be run\')">')
 
-  submit()
+  submit(function() {
+    debugger
+  })
 })
 
 asyncTest('execution of JS code does not modify current DOM', 1, function() {
