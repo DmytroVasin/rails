@@ -216,6 +216,7 @@ module ActiveRecord
       end
 
       def counter_cache_column
+        # binding.pry
         if belongs_to?
           if options[:counter_cache] == true
             "#{active_record.name.demodulize.underscore.pluralize}_count"
@@ -223,6 +224,7 @@ module ActiveRecord
             options[:counter_cache].to_s
           end
         else
+          # binding.pry
           options[:counter_cache] ? options[:counter_cache].to_s : "#{name}_count"
         end
       end
@@ -253,9 +255,16 @@ module ActiveRecord
       # Hence this method.
       def inverse_which_updates_counter_cache
         return @inverse_which_updates_counter_cache if defined?(@inverse_which_updates_counter_cache)
+
+  # binding.pry
+# klass.reflect_on_all_associations(:belongs_to).find.first.counter_cache_column
+
         @inverse_which_updates_counter_cache = klass.reflect_on_all_associations(:belongs_to).find do |inverse|
+          # p '>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>'*10
+          # binding.pry
           inverse.counter_cache_column == counter_cache_column
         end
+
       end
       alias inverse_updates_counter_cache? inverse_which_updates_counter_cache
 
@@ -268,6 +277,8 @@ module ActiveRecord
       # The counter_cache option must be given on either the owner or inverse
       # association, and the column must be present on the owner.
       def has_cached_counter?
+        # binding.pry
+
         options[:counter_cache] ||
           inverse_which_updates_counter_cache && inverse_which_updates_counter_cache.options[:counter_cache] &&
           !!active_record.columns_hash[counter_cache_column]
@@ -408,6 +419,7 @@ module ActiveRecord
 
       def initialize(name, scope, options, active_record)
         super
+        # binding.pry
         @automatic_inverse_of = nil
         @type         = options[:as] && (options[:foreign_type] || "#{options[:as]}_type")
         @foreign_type = options[:foreign_type] || "#{name}_type"

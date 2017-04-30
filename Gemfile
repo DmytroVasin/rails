@@ -55,6 +55,7 @@ gem "libxml-ruby", platforms: :ruby
 
 # Action View. For testing Erubis handler deprecation.
 gem "erubis", "~> 2.7.0", require: false
+gem "pry"
 
 # Active Job.
 group :job do

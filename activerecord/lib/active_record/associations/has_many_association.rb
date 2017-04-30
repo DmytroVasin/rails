@@ -63,6 +63,10 @@ module ActiveRecord
         # If the collection is empty the target is set to an empty array and
         # the loaded flag is set to true as well.
         def count_records
+          # p '----------------- count_records ----------------------'
+          # reflection.klass.reflect_on_all_associations(:belongs_to).first.counter_cache_column
+          # p '----------------- ------------- ----------------------'
+# binding.pry
           count = if reflection.has_cached_counter?
             owner._read_attribute(reflection.counter_cache_column).to_i
           else
