@@ -107,9 +107,7 @@ asyncTest('ecmascript code should be executed', 1, function() {
   $('form').append('<input type="text" name="content_type" value="application/ecmascript">')
   $('form').append('<input type="text" name="content" value="ok(true, \'remote code should be run\')">')
 
-  submit(function() {
-    debugger
-  })
+  submit()
 })
 
 asyncTest('execution of JS code does not modify current DOM', 1, function() {

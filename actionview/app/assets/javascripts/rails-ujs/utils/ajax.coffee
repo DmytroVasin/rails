@@ -15,18 +15,17 @@ Rails.ajax = (options) ->
   options = prepareOptions(options)
   xhr = createXHR options, ->
     response = processResponse(xhr.response, xhr.getResponseHeader('Content-Type'))
-    if xhr.status // 100 == 2
-      options.success?(response, xhr.statusText, xhr)
+    if (xhr.status // 100 == 2)
+      options.success(response, xhr.statusText, xhr)
     else
-      options.error?(response, xhr.statusText, xhr)
-    options.complete?(xhr, xhr.statusText)
-  # Call beforeSend hook
-  options.beforeSend?(xhr, options)
-  # Send the request
+      options.error(xhr, xhr.statusText, xhr.status)
+    options.complete(xhr, xhr.statusText)
+
+  unless options.beforeSend(xhr, options)
+    return false
+
   if xhr.readyState is XMLHttpRequest.OPENED
     xhr.send(options.data)
-  else
-    fire(document, 'ajaxStop') # to be compatible with jQuery.ajax
 
 prepareOptions = (options) ->
   options.url = options.url or location.href
@@ -62,11 +61,9 @@ createXHR = (options, done) ->
 
 processResponse = (response, type) ->
   if typeof response is 'string' and typeof type is 'string'
-    debugger
     if type.match(/\bjson\b/)
       try response = JSON.parse(response)
-      # else if type.match(/\b(?:java|ecma)script\b/)
-    else if type.match(/\bjavascript\b/)
+    else if type.match(/\b(?:java|ecma)script\b/)
       script = document.createElement('script')
       script.text = response
       document.head.appendChild(script).parentNode.removeChild(script)

@@ -50,7 +50,6 @@ Rails.handleRemote = (e) ->
     method = element.getAttribute('data-method')
     url = Rails.href(element)
     data = element.getAttribute('data-params')
-
   ajax(
     type: method or 'GET'
     url: url
@@ -62,7 +61,7 @@ Rails.handleRemote = (e) ->
         fire(element, 'ajax:send', [xhr])
       else
         fire(element, 'ajax:stopped')
-        xhr.abort()
+        return false
     success: (args...) -> fire(element, 'ajax:success', args)
     error: (args...) -> fire(element, 'ajax:error', args)
     complete: (args...) -> fire(element, 'ajax:complete', args)
